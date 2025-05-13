@@ -1,0 +1,65 @@
+{
+  "Vista - Plantel Historico (Consulta)": {
+    "description": "Plantel historico",
+    "server": "SPICA",
+    "query": "Select * from v_Plantel_historico",
+    "editable_columns": [],
+    "filterable_columns": ["Documento", "Nombre", "Apellido", "D4"],
+    "multiselect_filter_columns": ["D4"]
+  },
+  "Vista - Plantel Vigente (Consulta)": {
+    "description": "Plantel vigente",
+    "server": "SPICA",
+    "query": "select * from v_Plantel_Vigente",
+    "editable_columns": [],
+    "filterable_columns": ["Documento", "Nombre", "Apellido", "D4"],
+    "multiselect_filter_columns": ["D4"]
+  },
+  "Vista - Plantel Usuarios Actual (Consulta)": {
+    "description": "Usuarios actuales de plantel",
+    "query": "select     CASE \n        WHEN LEN(CUIT) > 3 THEN SUBSTRING(CUIT, 3, LEN(CUIT) - 3)\n        ELSE '999999'\n    END AS Documento , * from v_Usuarios_actual",
+    "editable_columns": [],
+    "filterable_columns": ["Documento", "CUIT", "Caso"],
+    "multiselect_filter_columns": ["Caso"],
+    "server": "SPICA"
+  },
+  "Query - StoreProcedures (Editable)": {
+    "description": "TEST store",
+    "server": "SPICA",
+    "query": "SELECT [ID]\n      ,[Proceso]\n      ,[StoreProcedure]\n      ,[Descripcion]\n      ,[Parametro]\n      ,[Obligatorio]\n      ,[NombreTabla]\n      ,[Tipo]\n  FROM [Auditoria].[dbo].[AUX_STOREPROCEDURESDTS]",
+    "editable_columns": ["Obligatorio"],
+    "filterable_columns": []
+  },
+  "Query - CorridasDTSX (Consulta)": {
+    "description": "Corridas dtsx regulus - spica",
+    "server": "SPICA",
+    "query": "select * from [Auditoria].[dbo].[AUX_CORRIDAS_DTSX]",
+    "editable_columns": ["Alcance"],
+    "filterable_columns": ["LogID", "Usuario"],
+    "multiselect_filter_columns": ["Usuario"]
+  },
+  "TEST - EMBA MAESTRO (Consulta)": {
+    "description": "test",
+    "query": "with maestro as (\n  SELECT case\n      when MATRICU_JURIS > ''\n      and MATRICU_REY > '' then 'tiene ambos11'\n      when MATRICU_JURIS > '' then MATRICU_JURIS\n      when MATRICU_REY > '' then MATRICU_REY\n      when matricu_rey_reemp > '' then matricu_rey_reemp\n      when matricu_rey_anteri > '' then matricu_rey_anteri\n      when matricu_juris_anteri > '' then matricu_juris_anteri\n      else 'ver11'\n    end as 'Matricula_unificada',\n    *\n  FROM [Source].[dbo].[SPEEMBA_MAESTRO_NUE]\n),\nmaestro_nue as (\n  select CASE\n      WHEN PATINDEX('%[0-9]%', matricula_unificada) > 0 THEN LEFT(\n        matricula_unificada,\n        PATINDEX('%[0-9]%', matricula_unificada) - 1\n      )\n      ELSE matricula_unificada\n    END AS matriculaLetras,\n    CASE\n      WHEN ISNUMERIC(RIGHT(matricula_unificada, 5)) = 1\n      AND LEN(matricula_unificada) >= 5 THEN RIGHT(matricula_unificada, 5)\n      ELSE ''\n    END AS Ultimos5Caracteres,\n    CASE\n      WHEN PATINDEX('%[0-9]%', matricula_unificada) > 0 THEN SUBSTRING(\n        matricula_unificada,\n        PATINDEX('%[0-9]%', matricula_unificada),\n        LEN(matricula_unificada)\n      )\n      ELSE ''\n    END AS matriculaNumeros,\n    *\n  from maestro\n)\nselect *\nfrom maestro_nue",
+    "editable_columns": [],
+    "filterable_columns": ["matriculaLetras"],
+    "multiselect_filter_columns": ["matriculaLetras"],
+    "server": "Regulus"
+  },
+  "TEST - EMBA MAESTRO DUP (Consulta)": {
+    "description": "asdasda",
+    "query": "WITH maestro AS (\n  SELECT CASE\n      WHEN MATRICU_JURIS > '' AND MATRICU_REY > '' THEN 'tiene ambos11'\n      WHEN MATRICU_JURIS > '' THEN MATRICU_JURIS\n      WHEN MATRICU_REY > '' THEN MATRICU_REY\n      WHEN matricu_rey_reemp > '' THEN matricu_rey_reemp\n      WHEN matricu_rey_anteri > '' THEN matricu_rey_anteri\n      WHEN matricu_juris_anteri > '' THEN matricu_juris_anteri\n      ELSE 'ver11'\n    END AS Matricula_unificada,\n    *\n  FROM [Source].[dbo].[SPEEMBA_MAESTRO_NUE]\n),\nmaestro_nue AS (\n  SELECT CASE\n      WHEN PATINDEX('%[0-9]%', matricula_unificada) > 0 THEN LEFT(\n        matricula_unificada,\n        PATINDEX('%[0-9]%', matricula_unificada) - 1\n      )\n      ELSE matricula_unificada\n    END AS matriculaLetras,\n    CASE\n      WHEN ISNUMERIC(RIGHT(matricula_unificada, 5)) = 1 AND LEN(matricula_unificada) >= 5 THEN RIGHT(matricula_unificada, 5)\n      ELSE ''\n    END AS Ultimos5Caracteres,\n    CASE\n      WHEN PATINDEX('%[0-9]%', matricula_unificada) > 0 THEN SUBSTRING(\n        matricula_unificada,\n        PATINDEX('%[0-9]%', matricula_unificada),\n        LEN(matricula_unificada)\n      )\n      ELSE ''\n    END AS matriculaNumeros,\n    *\n  FROM maestro\n),\nembarcaciones_duplicadas AS (\n  SELECT *\n  FROM maestro_nue\n  WHERE matricula_unificada IN (\n      SELECT matricula_unificada\n      FROM maestro_nue\n      WHERE matriculaletras NOT IN ('ver', 'tiene ambos')\n      GROUP BY Matricula_unificada\n      HAVING COUNT(*) > 1\n    )\n),\nembarcaciones_dup_emision AS (\n  SELECT *\n  FROM embarcaciones_duplicadas em\n  JOIN emisiones.dbo.Fact_Embarcaciones emi ON em.CLAVE_EMBARC_NU = emi.Embarcacion\n),\nembaraciones_dup_emision_dup AS (\n  SELECT matricula_unificada,\n    año,\n    cuota,\n    COUNT(*) AS cnt\n  FROM embarcaciones_dup_emision\n  GROUP BY matricula_unificada, año, cuota\n  HAVING COUNT(*) > 1\n),\nFinal_table AS (\n  SELECT \n    ed.*,\n    eded.cnt\n  FROM embarcaciones_dup_emision ed\n  JOIN embaraciones_dup_emision_dup eded ON ed.matricula_unificada = eded.matricula_unificada\n    AND ed.año = eded.año\n    AND ed.cuota = eded.cuota\n)\nSELECT * FROM Final_table",
+    "editable_columns": [],
+    "filterable_columns": ["matriculaLetras"],
+    "multiselect_filter_columns": ["matriculaLetras"],
+    "server": "Regulus"
+  },
+  "TEST - UsrPrf": {
+    "description": "asd",
+    "query": "WITH \nGestionMovimientos AS(\n\nSELECT [ID_impuesto]\n,[ID_TipoOperacion]\n,[ID_SubtipoOperacion]\n,[ID_Distrito]\n,[Fecha]\n,[ID_Operador]\n,[ID_Terminal]\n,[ID_Programa]\n,[Numero_enlace_obj]\n,[Area_datos]\n,[Import_total]\n,[MES_hojas]\n,[sector]\n,[C_Origen_solicitud]\n,[ID_OrganismoFisico]\n,[ID_OrganismoLogico]\n,[Start_Date]\n,[CodOrganismo]\n,[ID_VTAM_TipoOrganismo]\n,[Fecha_Corta]\nFROM [Gestion].[dbo].[FACT_GESTION_MOVIMIENTOS]\nWhere ID_TipoOperacion = 3 \nAND ID_SubtipoOperacion = 1 \nAND Fecha > '20240101'),\nGestionOperaciones AS (\nSELECT [Tipo]\n,[Subtipo]\n,[Descripcion]\n,[hojas]\n,[habilitada]\n,[Fechaini]\n,[Grupo]\n,[SK_CategoriaOperacion]\n,[AtencionPublico]\n,[Start_Date]\n,[Stop_Date]\nFROM [Gestion].[dbo].[GESTION_OPERACIONES]\n),\nFinal_Gestion as (\nSELECT \n[Tipo]\n,[Subtipo]\n,[Descripcion]\n,id_impuesto\n,Id_Distrito\n,Fecha\n,Id_Operador\n,id_terminal\n,id_programa\n,numero_enlace_obj\n,area_datos\nFROM \nGestionMovimientos\nLEFT JOIN GestionOperaciones \nON ID_TipoOperacion = Tipo \nAND ID_SubtipoOperacion = Subtipo\n)\nselect * from Final_Gestion",
+    "editable_columns": [],
+    "filterable_columns": ["id_terminal"],
+    "multiselect_filter_columns": [],
+    "server": "Regulus"
+  }
+}

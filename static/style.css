@@ -1,0 +1,418 @@
+/* Variables globales */
+:root {
+  /* Tema claro (default) */
+  --primary-color: #70beca;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --background-color: #f8f9fa;
+  --card-background: #ffffff;
+  --text-color: #212529;
+  --border-color: #dee2e6;
+  --hover-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Estilos globales */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Navbar personalizado */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--primary-color);
+}
+
+.navbar-brand i {
+  margin-right: 8px;
+}
+.o-logo {
+  color: #f8f9fa;
+  font-size: 2.625rem;
+  font-weight: 700;
+
+  padding: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-shadow: 0px 2px 40px rgba(19, 30, 80, 0.52005);
+  -webkit-transition: 0.3s color;
+  transition: 0.3s color;
+  will-change: color;
+  text-decoration: none;
+}
+.o-logo .o-logo__claim {
+  color: #f8f9fa;
+  text-transform: uppercase;
+  max-width: 35%;
+  display: inline-block;
+  white-space: normal;
+  font-weight: 600;
+  line-height: 0.6875rem;
+  font-size: 0.6875rem;
+  margin-left: 18px;
+  text-shadow: none;
+  -webkit-transition: 0.3s color;
+  transition: 0.3s color;
+  will-change: color;
+  text-decoration: none;
+}
+/* Cards */
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: none;
+  margin-bottom: 1rem;
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+}
+
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Filtros */
+#filtersContainer {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.filter-group {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.filter-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-bottom: 4px;
+}
+
+.filter-input-field,
+.form-control.filter-input {
+  overflow-x: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+  cursor: text;
+}
+
+.filter-input-field::placeholder {
+  opacity: 0.6;
+}
+
+.filter-input-field:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Estilos para la tabla de resultados */
+.table {
+  margin-bottom: 0;
+  font-size: 0.8rem; /* Reducir tamaño de fuente general */
+}
+
+.table thead th {
+  background-color: var(--background-color);
+  font-weight: 600;
+  border-top: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.5rem; /* Reducir padding */
+  font-size: 0.85rem; /* Tamaño ligeramente mayor que las celdas */
+  white-space: nowrap; /* Evitar que los encabezados se partan */
+}
+
+.table td {
+  padding: 0.25rem 0.5rem; /* Reducir padding */
+  vertical-align: middle;
+  max-width: 200px; /* Limitar ancho máximo */
+  white-space: nowrap; /* Evitar que el texto se parta */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Mostrar ... cuando el texto es muy largo */
+}
+
+/* Hacer que las celdas muestren el contenido completo al hacer hover */
+.table td:hover {
+  white-space: normal;
+  overflow: visible;
+  background-color: var(--hover-color);
+  position: relative;
+  z-index: 1;
+}
+
+/* Ajustar el botón dentro de la tabla */
+.table .btn-sm {
+  padding: 0.1rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Estilo para el contenedor principal de la tabla */
+#table-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(
+    100vh - 250px
+  ); /* Ajusta este valor según el espacio disponible */
+  min-height: 400px;
+}
+
+/* Contenedor con scroll para la tabla */
+.table-responsive {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+/* Hacer que la tabla ocupe todo el espacio disponible */
+.table {
+  margin-bottom: 0;
+}
+
+/* Fijar el encabezado de la tabla */
+.table thead th {
+  position: sticky;
+  top: 0;
+
+  z-index: 1;
+}
+
+/* Contenedor de paginación fijo en la parte inferior */
+.pagination-container {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--body-background);
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+/* Estilo para filas alternadas */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Hover sobre las filas */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Botones personalizados */
+.btn {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.btn-consultas {
+  background-color: #70beca;
+  color: white;
+}
+
+.btn i {
+  margin-right: 6px;
+}
+
+/* Modal */
+.modal-content {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .col-md-3 {
+    margin-bottom: 1rem;
+  }
+
+  .table-responsive {
+    margin: 0 -1rem;
+  }
+}
+
+/* Estilos para campos editables */
+[contenteditable="true"] {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 2px 6px;
+  border-radius: 4px;
+  outline: none;
+}
+
+[contenteditable="true"]:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* Badge personalizado */
+#record-count {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+}
+
+/* Toast Customization */
+.toast {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+/* Estilos para la tarjeta de ayuda de filtros */
+.filter-help-card {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.filter-help-card ul {
+  margin-bottom: 0;
+  padding-left: 1.2rem;
+}
+
+.filter-help-card li {
+  margin-bottom: 0.2rem;
+}
+
+/* Estilos para el modal de nueva entrada */
+#newEntryModal .modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+#newEntryModal .form-label {
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#newEntryModal .text-muted {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--secondary-color) !important;
+}
+
+#newEntryModal .form-control {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+  color: var(--text-color);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+#newEntryModal .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(112, 190, 202, 0.25);
+}
+
+#newEntryModal .form-control.required {
+  border-left: 3px solid var(--primary-color);
+}
+
+#newEntryModal .form-control.is-invalid {
+  border-color: #dc3545;
+  border-left: 3px solid #dc3545;
+}
+
+/* Ajustar el tamaño del modal */
+#newEntryModal .modal-dialog {
+  max-width: 600px;
+}
+
+/* Estilos para celdas editables */
+.editable-cell {
+  position: relative;
+  cursor: pointer;
+}
+
+.editable-cell:hover {
+  background-color: rgba(112, 190, 202, 0.1);
+}
+
+.editable-cell:hover::after {
+  content: "✎";
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 12px;
+  color: #70beca;
+  opacity: 0.7;
+}
+
+/* Cuando la celda está en modo edición */
+.editable-cell:has(input) {
+  padding: 0;
+  background-color: rgba(112, 190, 202, 0.05);
+}
+
+.editable-cell input {
+  width: 100%;
+  min-width: 100px;
+  border: 1px solid #70beca;
+}
+
+/* Estilos para la guía de filtros SQL */
+#filterExamples code {
+  background-color: rgba(112, 190, 202, 0.1);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  color: #0c5460;
+}
+
+#filterExamples ul {
+  margin-bottom: 0;
+}
+
+#filterExamples li {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+#filterExamples h6.text-primary {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  color: #70beca !important;
+}
+
+/* Filter inputs */
+#filter-inputs-container .form-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+#filter-inputs-container input {
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+/* Filtros verticales para filtros predefinidos */
+.filter-inputs-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+.filter-inputs-vertical .filter-field-group {
+  width: 100%;
+}
