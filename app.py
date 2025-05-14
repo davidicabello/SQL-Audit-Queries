@@ -349,7 +349,7 @@ def add_query():
 
         # --- Control de acceso por IP ---
         AUTHORIZED_IPS = [
-            "10.16.236.64",  # IP autorizada para test
+            "",  # IP autorizada para test
         ]
         client_ip = request.remote_addr
         if client_ip not in AUTHORIZED_IPS:
@@ -393,7 +393,7 @@ def delete_query(name):
     try:
         # --- Control de acceso por IP ---
         AUTHORIZED_IPS = [
-            "10.16.236.64",  # IP autorizada para test
+            "",  # IP autorizada para test
         ]
         client_ip = request.remote_addr
         if client_ip not in AUTHORIZED_IPS:
@@ -751,18 +751,7 @@ def execute_predefined_query():
             # --- Ejecutar CON paginación (lógica existente) --- 
             # logger.info(f"Ejecutando consulta '{query_name}' CON paginación.")
             if is_cte:
-                # PAGINACIÓN PARA CTEs (lógica existente)
-                # ... (código existente para obtener columnas, contar y paginar CTEs)
-                # 1. OBTENER COLUMNAS:
-                # ... (código de try/except con query_for_columns_only y fallback)
-                # 2. Determinar cláusula ORDER BY (sin cambios)
-                # ... (código existente)
-                # 3. Obtener total de registros (sin cambios)
-                # ... (código existente)
-                # 4. Calcular límites (sin cambios)
-                # ... (código existente)
-                # 5. Construir SELECT paginado (sin cambios)
-                # ... (código existente)
+      
                 cte_part, select_part, cte_final_name = split_cte_and_select(base_query)
                 if not select_part.strip().upper().startswith('SELECT'):
                     return jsonify({"error": "No se pudo identificar el SELECT final después del CTE."}), 400
